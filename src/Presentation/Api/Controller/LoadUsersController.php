@@ -8,7 +8,7 @@ use App\UseCase\LoadUsersUseCase;
 /**
  * @property \App\UseCase\LoadUsersUseCase $useCase
  */
-class LoadUsersController implements ControllerInterface
+class LoadUsersController
 {
 
     private $useCase;
@@ -22,6 +22,8 @@ class LoadUsersController implements ControllerInterface
     {
         $users = $this->useCase->execute();
 
-        echo Json::encode($users);
+        header('Content-Type: application/json');
+
+        echo Json::encode(compact('users'));
     }
 }

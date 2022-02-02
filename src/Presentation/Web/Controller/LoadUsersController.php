@@ -8,7 +8,7 @@ use Twig\Environment;
 /**
  * @property \App\UseCase\LoadUsersUseCase $useCase
  */
-class LoadUsersController implements ControllerInterface
+class LoadUsersController
 {
 
     private $useCase;
