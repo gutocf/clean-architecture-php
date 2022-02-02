@@ -1,0 +1,23 @@
+{
+    "name": "gutocf/clean-architecture-php",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Test\\": "tests/"
+        }
+    },
+    "require": {
+        "php-di/php-di": "^6.3",
+        "laminas/laminas-json": "^3.3",
+        "cakephp/collection": "^4.3",
+        "cakephp/database": "^4.3",
+        "twig/twig": "3.0",
+        "league/csv": "^9.8"
+    }
+}
