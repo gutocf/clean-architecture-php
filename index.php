@@ -1,12 +1,12 @@
 <?php
 
+use App\Main\Adapter\Http\ResponseEmitter;
+use App\Presentation\Controller\Api\LoadUsersController as ApiLoadUsersController;
+use App\Presentation\Controller\ControllerInterface;
+use App\Presentation\Controller\Web\LoadUsersController as WebLoadUsersController;
 use DI\ContainerBuilder;
-use App\Presentation\Api\Controller\LoadUsersController as ApiLoadUsersController;
-use App\Presentation\Web\Controller\LoadUsersController as WebLoadUsersController;
-use App\UseCase\LoadUsersUseCase;
-
-use function DI\create;
-use function DI\get;
+use Laminas\Diactoros\ServerRequestFactory;
+use Psr\Http\Message\RequestInterface;
 
 define('DS', DIRECTORY_SEPARATOR);
 
@@ -16,13 +16,21 @@ require_once __DIR__ . DS . 'config' . DS . 'database.php';
 
 /**
  * @property \DI\Container $container
- * @property \Symfony\Component\Routing\RouteCollection $router
  */
 class Application
 {
-    private static $instance;
+    private RequestInterface $request;
+
+    private ResponseEmitter $emitter;
 
     private function __construct()
+    {
+        $this->initContainer();
+        $this->emitter = $this->container->get(ResponseEmitter::class);
+        $this->request = ServerRequestFactory::fromGlobals();
+    }
+
+    private function initContainer()
     {
         $builder =  (new ContainerBuilder())
             ->useAutowiring(false)
@@ -32,30 +40,27 @@ class Application
         $this->container = $builder->build();
     }
 
-    public static function getInstance(): self
+    private function getController(): ?ControllerInterface
     {
-        if (!self::$instance) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-    public function run()
-    {
-        switch ($_SERVER['REQUEST_URI']) {
+        switch ($this->request->getUri()->getPath()) {
 
             case '/users':
-                $controller = $this->container->get(WebLoadUsersController::class);
-                $controller->index();
-                break;
+                return $this->container->get(WebLoadUsersController::class);
 
             case '/api/users':
-                $controller = $this->container->get(ApiLoadUsersController::class);
-                $controller->index();
-                break;
+                return $this->container->get(ApiLoadUsersController::class);
         }
+
+        return null;
+    }
+
+    public static function run()
+    {
+        $application = new Application();
+        $controller = $application->getController();
+        $response = $controller->handle($application->request);
+        $application->emitter->emit($response);
     }
 }
 
-Application::getInstance()->run();
+Application::run();
