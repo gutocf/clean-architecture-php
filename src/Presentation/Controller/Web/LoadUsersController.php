@@ -28,7 +28,7 @@ class LoadUsersController implements ControllerInterface
     public function handle(RequestInterface $request): ResponseInterface
     {
         $users = $this->useCase->execute();
-        $html = $this->twig->render('users/index.html', compact('users'));
+        $html = $this->twig->render('/users/index.html', compact('users'));
 
         return new HtmlResponse($html);
     }

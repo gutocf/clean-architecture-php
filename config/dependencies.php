@@ -29,10 +29,10 @@ return [
     LoadUsersUseCase::class => create()->constructor(get(UserRepositoryInterface::class)),
 
     Environment::class => function () {
-        $loader = new \Twig\Loader\FilesystemLoader(ROOT . 'templates');
+        $loader = new \Twig\Loader\FilesystemLoader('templates', ROOT);
         return new \Twig\Environment($loader, [
             'cache' => false,
-            'cache' => ROOT . 'tmp' . DS . 'cache' . DS . 'views'
+            // 'cache' => ROOT . 'tmp' . DS . 'cache' . DS . 'views'
         ]);
     },
 

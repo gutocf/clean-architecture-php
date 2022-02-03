@@ -1,9 +1,24 @@
-<h1>Usuários</h1>
-<ul>
+{% extends "base.html" %}
+
+{% block title %}Usuários{% endblock %}
+
+{% block content %}
+
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Usuários</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Todos os usuários cadastrados.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        </div>
+    </div>
+</div>
+
+<div class="list-group">
     {% for user in users %}
-    <li>
+    <a href="/users/{{ user.id|e }}" class="list-group-item list-group-item-action">
         <strong>{{ user.name|e }}</strong><br>
-        <a href="mailto:{{user.email}}">{{user.email}}</a>
-    </li>
+        <em>{{ user.email|e}}</em>
+    </a>
     {% endfor %}
-</ul>
+</div>
+{% endblock %}
