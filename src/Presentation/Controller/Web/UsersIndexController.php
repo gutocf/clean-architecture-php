@@ -3,23 +3,23 @@
 namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\LoadUsersUseCase;
+use App\UseCase\UsersIndexUseCase;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Twig\Environment;
 
 /**
- * @property \App\UseCase\LoadUsersUseCase $useCase
+ * @property \App\UseCase\UsersIndexUseCase $useCase
  */
-class LoadUsersController implements ControllerInterface
+class UsersIndexController implements ControllerInterface
 {
 
     private $useCase;
 
     private $twig;
 
-    public function __construct(LoadUsersUseCase $useCase, Environment $twig)
+    public function __construct(UsersIndexUseCase $useCase, Environment $twig)
     {
         $this->useCase = $useCase;
         $this->twig = $twig;

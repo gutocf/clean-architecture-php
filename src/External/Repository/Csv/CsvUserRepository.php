@@ -16,6 +16,17 @@ class CsvUserRepository implements UserRepositoryInterface
         $this->csv = $csv;
     }
 
+    public function findById(int $id): ?UserData
+    {
+        $users = $this->findAll();
+
+        return collection($users)
+            ->filter(function (UserData $userData) use ($id) {
+                return $userData->id === $id;
+            })
+            ->first();
+    }
+
     public function findAll(): array
     {
         $records = $this->csv->read('users');

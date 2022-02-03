@@ -20,6 +20,27 @@ class MysqlUserRepository implements UserRepositoryInterface
     }
 
     /**
+     * Retrieves user data by its id.
+     *
+     * @return UserData
+     */
+    public function findById(int $id): ?UserData
+    {
+        $records = $this->database->select('users', ['id', 'name', 'email', 'password'], ['id' => $id]);
+
+        return collection($records)
+            ->map(function ($record) {
+                return new UserData(
+                    intval($record->id),
+                    $record->name,
+                    $record->email,
+                    $record->password
+                );
+            })
+            ->first();
+    }
+
+    /**
      * Retrieves all users data.
      *
      * @inheritdoc

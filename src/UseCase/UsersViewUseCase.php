@@ -7,7 +7,7 @@ use App\UseCase\Port\UserRepositoryInterface;
 /**
  * @property \App\UseCase\Port\UserRepository $repository
  */
-class LoadUsersUseCase
+class UsersViewUseCase
 {
 
     private $repository;
@@ -17,8 +17,8 @@ class LoadUsersUseCase
         $this->repository = $repository;
     }
 
-    public function execute()
+    public function execute(int $id)
     {
-        return $this->repository->findAll();
+        return $this->repository->findById($id);
     }
 }

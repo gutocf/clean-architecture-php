@@ -1,9 +1,11 @@
 <?php
 
 use App\Main\Adapter\Http\ResponseEmitter;
-use App\Presentation\Controller\Api\LoadUsersController as ApiLoadUsersController;
+use App\Presentation\Controller\Api\UsersIndexController as ApiUsersIndexController;
+use App\Presentation\Controller\Api\UsersViewController as ApiUsersViewController;
 use App\Presentation\Controller\ControllerInterface;
-use App\Presentation\Controller\Web\LoadUsersController as WebLoadUsersController;
+use App\Presentation\Controller\Web\UsersIndexController as WebUsersIndexController;
+use App\Presentation\Controller\Web\UsersViewController as WebUsersViewController;
 use DI\ContainerBuilder;
 use Laminas\Diactoros\ServerRequestFactory;
 use Psr\Http\Message\RequestInterface;
@@ -42,13 +44,23 @@ class Application
 
     private function getController(): ?ControllerInterface
     {
-        switch ($this->request->getUri()->getPath()) {
 
-            case '/users':
-                return $this->container->get(WebLoadUsersController::class);
+        $path = $this->request->getUri()->getPath();
 
-            case '/api/users':
-                return $this->container->get(ApiLoadUsersController::class);
+        if (preg_match('/^\/users\/\d+\/?$/', $path)) {
+            return $this->container->get(WebUsersViewController::class);
+        }
+
+        if (preg_match('/^\/users\/?$/', $path)) {
+            return $this->container->get(WebUsersIndexController::class);
+        }
+
+        if (preg_match('/^\/api\/users\/\d+\/?$/', $path)) {
+            return $this->container->get(ApiUsersViewController::class);
+        }
+
+        if (preg_match('/^\/api\/users\/?$/', $path)) {
+            return $this->container->get(ApiUsersIndexController::class);
         }
 
         return null;
