@@ -8,7 +8,6 @@ use App\External\Persistence\DatabaseInterface;
 use App\External\Persistence\MysqlDatabase;
 use App\External\Repository\Csv\CsvUserRepository;
 use App\External\Repository\Mysql\MysqlUserRepository;
-use App\Main\Adapter\Http\ResponseEmitter;
 use App\Presentation\Controller\Api\UsersIndexController as ApiUsersIndexController;
 use App\Presentation\Controller\Api\UsersViewController as ApiUsersViewController;
 use App\Presentation\Controller\Web\UsersIndexController as WebUsersIndexController;
@@ -22,12 +21,10 @@ use function DI\create;
 use function DI\get;
 
 return [
-    ResponseEmitter::class => create(),
     DatabaseInterface::class => create(MysqlDatabase::class),
-    UserRepositoryInterface::class => create(MysqlUserRepository::class)->constructor(get(DatabaseInterface::class)),
-
     CsvInterface::class => create(CsvHandler::class),
-    UserRepositoryInterface::class => create(CsvUserRepository::class)->constructor(get(CsvInterface::class)),
+    UserRepositoryInterface::class => create(MysqlUserRepository::class)->constructor(get(DatabaseInterface::class)),
+    // UserRepositoryInterface::class => create(CsvUserRepository::class)->constructor(get(CsvInterface::class)),
 
     UsersIndexUseCase::class => create()->constructor(get(UserRepositoryInterface::class)),
     UsersViewUseCase::class => create()->constructor(get(UserRepositoryInterface::class)),
