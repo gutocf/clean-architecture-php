@@ -4,10 +4,9 @@ namespace App\Presentation\Controller\Api;
 
 use App\Presentation\Controller\ControllerInterface;
 use App\UseCase\UsersViewUseCase;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\Response\JsonResponse;
-use Psr\Http\Message\RequestInterface;
+use Laminas\Json\Json;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @property \App\UseCase\UsersIndexUseCase $useCase
@@ -22,21 +21,16 @@ class UsersViewController implements ControllerInterface
         $this->useCase = $useCase;
     }
 
-    public function handle(RequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
     {
-        $id = $this->getId($request);
-        $user = $this->useCase->execute($id);
+        $user = $this->useCase->execute(intval($args['id']));
 
         if (!$user) {
-            return new EmptyResponse(404);
+            return $response->withStatus(404);
         }
 
-        return new JsonResponse(compact('user'));
-    }
+        $response->getBody()->write(Json::encode(compact('user')));
 
-    private function getId(RequestInterface $request): int
-    {
-        preg_match('/^\/api\/users\/(?<id>\d+)\/?$/', $request->getUri()->getPath(), $matches);
-        return intval($matches['id']);
+        return $response;
     }
 }

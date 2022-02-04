@@ -4,10 +4,8 @@ namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
 use App\UseCase\UsersViewUseCase;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\Response\HtmlResponse;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
 
 /**
@@ -26,23 +24,17 @@ class UsersViewController implements ControllerInterface
         $this->twig = $twig;
     }
 
-    public function handle(RequestInterface $request): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
     {
-        $id = $this->getId($request);
-        $user = $this->useCase->execute($id);
+        $user = $this->useCase->execute(intval($args['id']));
 
         if (!$user) {
-            return new EmptyResponse(404);
+            return $response->withStatus(404);
         }
 
         $html = $this->twig->render('/users/view.html', compact('user'));
+        $response->getBody()->write($html);
 
-        return new HtmlResponse($html);
-    }
-
-    private function getId(RequestInterface $request): int
-    {
-        preg_match('/^\/users\/(?<id>\d+)\/?$/', $request->getUri()->getPath(), $matches);
-        return intval($matches['id']);
+        return $response;
     }
 }

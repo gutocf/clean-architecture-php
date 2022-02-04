@@ -4,9 +4,8 @@ namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
 use App\UseCase\UsersIndexUseCase;
-use Laminas\Diactoros\Response\HtmlResponse;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
 
 /**
@@ -25,11 +24,14 @@ class UsersIndexController implements ControllerInterface
         $this->twig = $twig;
     }
 
-    public function handle(RequestInterface $request): ResponseInterface
+
+
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
     {
         $users = $this->useCase->execute();
         $html = $this->twig->render('/users/index.html', compact('users'));
+        $response->getBody()->write($html);
 
-        return new HtmlResponse($html);
+        return $response;
     }
 }
