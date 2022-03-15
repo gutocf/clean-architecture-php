@@ -4,20 +4,8 @@ namespace App\Entity;
 
 class User
 {
-    private int $id;
-
-    private string $name;
-
-    private string $email;
-
-    private string $password;
-
-    public function __construct(int $id, string $name, string $email, string $password)
+    public function __construct(private int $id, private string $name, private string $email, private string $password)
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
-        $this->password = $password;
     }
 
     public function setId(int $id): self

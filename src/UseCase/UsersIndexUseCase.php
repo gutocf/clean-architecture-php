@@ -9,12 +9,8 @@ use App\UseCase\Port\UserRepositoryInterface;
  */
 class UsersIndexUseCase
 {
-
-    private $repository;
-
-    public function __construct(UserRepositoryInterface $repository)
+    public function __construct(private UserRepositoryInterface $repository)
     {
-        $this->repository = $repository;
     }
 
     public function execute()

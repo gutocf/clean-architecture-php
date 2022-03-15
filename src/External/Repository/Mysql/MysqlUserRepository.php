@@ -14,9 +14,8 @@ use App\UseCase\Port\UserRepositoryInterface;
 class MysqlUserRepository implements UserRepositoryInterface
 {
 
-    public function __construct(DatabaseInterface $database)
+    public function __construct(private DatabaseInterface $database)
     {
-        $this->database =  $database;
     }
 
     /**

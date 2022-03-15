@@ -11,9 +11,8 @@ use App\UseCase\Port\UserRepositoryInterface;
  */
 class CsvUserRepository implements UserRepositoryInterface
 {
-    public function __construct(CsvInterface $csv)
+    public function __construct(private CsvInterface $csv)
     {
-        $this->csv = $csv;
     }
 
     public function findById(int $id): ?UserData
