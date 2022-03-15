@@ -13,6 +13,7 @@
         }
     },
     "require": {
+        "php": ">=8.0",
         "cakephp/collection": "^4.3",
         "cakephp/database": "^4.3",
         "laminas/laminas-diactoros": "^2.8",
@@ -21,5 +22,8 @@
         "php-di/php-di": "^6.3",
         "slim/slim": "4.*",
         "twig/twig": "^3.0"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.4"
     }
 }
