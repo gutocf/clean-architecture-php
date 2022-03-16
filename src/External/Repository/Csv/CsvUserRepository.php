@@ -72,7 +72,18 @@ class CsvUserRepository implements UserRepositoryInterface
      */
     public function create(User $user): bool
     {
-        throw new RuntimeException('Not implemented');
+        $records = $this->csv->read('users');
+
+        $id = count($records) + 1;
+
+        $records[] = [
+            $id,
+            $user->getName(),
+            $user->getEmail(),
+            $user->getPassword()
+        ];
+
+        return $this->csv->write('users', $records);
     }
 
     /**
