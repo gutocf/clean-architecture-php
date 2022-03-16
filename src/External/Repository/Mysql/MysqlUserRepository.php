@@ -7,6 +7,7 @@ namespace App\External\Repository\Mysql;
 use App\External\Persistence\DatabaseInterface;
 use App\UseCase\Port\UserData;
 use App\UseCase\Port\UserRepositoryInterface;
+use RuntimeException;
 
 /**
  * @property \App\External\Persistence\DatabaseInterface $database
@@ -58,5 +59,17 @@ class MysqlUserRepository implements UserRepositoryInterface
                 );
             })
             ->toArray();
+    }
+
+    public function update(UserData $userData): bool
+    {
+        $data = [
+            'name' => $userData->name,
+            'email' => $userData->email,
+            'password' => $userData->password,
+        ];
+        $conditions = ['id' => $userData->id];
+
+        return $this->database->update('users', $data, $conditions);
     }
 }

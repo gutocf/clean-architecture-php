@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários{% endblock %}
+
+{% block content %}
+
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold">Usuários</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Editar usuário.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        </div>
+    </div>
+</div>
+
+<form method="post">
+
+    <input name="id" type="hidden" value="{{ user.id|e }}">
+
+    <div class="form-floating mb-3">
+        <input name="name" type="text" class="form-control" placeholder="John Doe" value="{{ user.name|e }}">
+        <label>Nome</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input name="email" type="email" class="form-control" placeholder="johndoe@example.com"
+            value="{{ user.email|e }}">
+        <label>E-mail</label>
+    </div>
+
+    <div class="py-3 text-end">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="/users" class="btn btn-light">&laquo; Cancelar</a>
+    </div>
+
+</form>
+{% endblock %}

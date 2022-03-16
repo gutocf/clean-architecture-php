@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Presentation\Controller\Api;
+namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
 use App\UseCase\Port\UserData;
+use App\UseCase\User\ListUser;
 use App\UseCase\UsersIndexUseCase;
 use Laminas\Json\Json;
 use Psr\Http\Message\ResponseInterface;
@@ -15,18 +16,15 @@ use Psr\Http\Message\ServerRequestInterface;
 class UsersIndexController implements ControllerInterface
 {
 
-    private $useCase;
-
-    public function __construct(UsersIndexUseCase $useCase)
+    public function __construct(private ListUser $listUser)
     {
-        $this->useCase = $useCase;
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
     {
         $uri = $request->getUri();
 
-        $users = collection($this->useCase->execute())
+        $users = collection($this->listUser->list())
             ->map(function (UserData $user) use ($uri) {
                 return [
                     'id' => $user->id,

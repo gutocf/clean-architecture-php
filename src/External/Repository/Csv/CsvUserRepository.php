@@ -5,6 +5,7 @@ namespace App\External\Repository\Csv;
 use App\External\Persistence\CsvInterface;
 use App\UseCase\Port\UserData;
 use App\UseCase\Port\UserRepositoryInterface;
+use RuntimeException;
 
 /**
  * @property \App\External\Persistence\CsVInterface $csv
@@ -40,5 +41,10 @@ class CsvUserRepository implements UserRepositoryInterface
                 );
             })
             ->toArray();
+    }
+
+    public function update(UserData $data): UserData
+    {
+        throw new RuntimeException('Not implemented yet.');
     }
 }

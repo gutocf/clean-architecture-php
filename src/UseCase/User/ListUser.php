@@ -1,19 +1,16 @@
 <?php
 
-namespace App\UseCase;
+namespace App\UseCase\User;
 
 use App\UseCase\Port\UserRepositoryInterface;
 
-/**
- * @property \App\UseCase\Port\UserRepository $repository
- */
-class UsersIndexUseCase
+class ListUser
 {
     public function __construct(private UserRepositoryInterface $repository)
     {
     }
 
-    public function execute()
+    public function list()
     {
         return $this->repository->findAll();
     }

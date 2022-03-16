@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Presentation\Controller\Api;
+namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
+use App\UseCase\User\ViewUser;
 use App\UseCase\UsersViewUseCase;
 use Laminas\Json\Json;
 use Psr\Http\Message\ResponseInterface;
@@ -14,16 +15,13 @@ use Psr\Http\Message\ServerRequestInterface;
 class UsersViewController implements ControllerInterface
 {
 
-    private $useCase;
-
-    public function __construct(UsersViewUseCase $useCase)
+    public function __construct(private ViewUser $viewUser)
     {
-        $this->useCase = $useCase;
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
     {
-        $user = $this->useCase->execute(intval($args['id']));
+        $user = $this->viewUser->view(intval($args['id']));
 
         if (!$user) {
             return $response->withStatus(404);
