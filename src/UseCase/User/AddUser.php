@@ -4,25 +4,24 @@ namespace App\UseCase\User;
 
 use App\Entity\User;
 use App\UseCase\Port\UserRepositoryInterface;
-use App\UseCase\Port\User\UpdateUserData;
+use App\UseCase\Port\User\AddUserData;
 use App\UseCase\User\Exception\InvalidEmailException;
 use App\UseCase\User\Exception\InvalidNameException;
 use App\UseCase\User\Exception\InvalidPasswordException;
 use App\UseCase\User\Exception\UserExistsException;
-use App\UseCase\User\Exception\UserNotFoundException;
 
-class UpdateUser
+class AddUser
 {
     public function __construct(private UserRepositoryInterface $repository)
     {
     }
 
-    public function update(UpdateUserData $data): bool
+    public function add(AddUserData $data): bool
     {
-        $user = $this->repository->findById($data->id);
+        $user = $this->repository->findByEmail($data->email);
 
-        if ($user === null) {
-            throw new UserNotFoundException();
+        if ($user !== null) {
+            throw new UserExistsException();
         }
 
         if (empty($data->name)) {
@@ -33,14 +32,12 @@ class UpdateUser
             throw new InvalidEmailException();
         }
 
-        $user->setName($data->name);
-        $user->setEmail($data->email);
+        if (empty($data->password)) {
+            throw new InvalidPasswordException();
+        }
 
-        return $this->repository->update($user);
-    }
+        $user = new User(null, $data->name, $data->email, $data->password);
 
-    public function get(int $id): ?User
-    {
-        return $this->repository->findById($id);
+        return $this->repository->create($user);
     }
 }

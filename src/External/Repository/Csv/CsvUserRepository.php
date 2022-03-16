@@ -5,6 +5,7 @@ namespace App\External\Repository\Csv;
 use App\Entity\User;
 use App\External\Persistence\CsvInterface;
 use App\UseCase\Port\UserRepositoryInterface;
+use RuntimeException;
 
 /**
  * @property \App\External\Persistence\CsVInterface $csv
@@ -32,8 +33,12 @@ class CsvUserRepository implements UserRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function findByEmail(string $email): ?User
+    public function findByEmail(?string $email): ?User
     {
+        if (!$email) {
+            return null;
+        }
+
         $users = $this->findAll();
 
         return collection($users)
@@ -60,6 +65,14 @@ class CsvUserRepository implements UserRepositoryInterface
                 );
             })
             ->toArray();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create(User $user): bool
+    {
+        throw new RuntimeException('Not implemented');
     }
 
     /**

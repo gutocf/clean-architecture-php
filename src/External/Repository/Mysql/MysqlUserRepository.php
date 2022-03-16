@@ -40,8 +40,12 @@ class MysqlUserRepository implements UserRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function findByEmail(string $email): ?User
+    public function findByEmail(?string $email): ?User
     {
+        if(!$email){
+            return null;
+        }
+
         $records = $this->database->select('users', ['id', 'name', 'email', 'password'], ['email' => $email]);
 
         return collection($records)
@@ -73,6 +77,20 @@ class MysqlUserRepository implements UserRepositoryInterface
                 );
             })
             ->toArray();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create(User $user): bool
+    {
+        $this->database->insert('users', [
+            'name' => $user->getName(),
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword()
+        ]);
+
+        return true;
     }
 
     /**

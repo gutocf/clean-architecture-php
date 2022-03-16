@@ -4,7 +4,9 @@ namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
 use App\UseCase\Port\User\UpdateUserData;
+use App\UseCase\User\Exception\UserNotFoundException;
 use App\UseCase\User\UpdateUser;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
@@ -22,29 +24,38 @@ class UsersEditController implements ControllerInterface
     {
         $id = intval($args['id']);
 
-        $user = $this->updateUser->get($id);
+        $error = null;
 
-        if (!$user) {
-            return $response->withStatus(404);
-        }
-
-        if ($request->getMethod() === 'POST') {
-            $data = $request->getParsedBody();
+        try {
+            $user = $this->updateUser->get($id);
 
             $updateUserData = new UpdateUserData(
                 $id,
-                $data['name'],
-                $data['email']
+                $user->getName(),
+                $user->getEmail()
             );
 
-            $this->updateUser->update($updateUserData);
+            if (!$user) {
+                throw new UserNotFoundException();
+            }
 
-            return $response
-                ->withStatus(302)
-                ->withHeader('Location', '/users');
+            if ($request->getMethod() === 'POST') {
+                $data = $request->getParsedBody();
+
+                $updateUserData->name = $data['name'];
+                $updateUserData->email = $data['email'];
+
+                $this->updateUser->update($updateUserData);
+
+                return $response
+                    ->withStatus(302)
+                    ->withHeader('Location', '/users');
+            }
+        } catch (Exception $ex) {
+            $error = $ex->getMessage();
         }
 
-        $html = $this->twig->render('/users/edit.html', compact('user'));
+        $html = $this->twig->render('/users/edit.html', compact('updateUserData', 'error'));
         $response->getBody()->write($html);
 
         return $response;

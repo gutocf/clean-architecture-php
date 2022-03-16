@@ -2,10 +2,12 @@
 
 use App\Presentation\Controller\Rest\UsersIndexController as RestUsersIndexController;
 use App\Presentation\Controller\Rest\UsersViewController as RestUsersViewController;
+use App\Presentation\Controller\Rest\UsersAddController as RestUsersAddController;
 use App\Presentation\Controller\Rest\UsersEditController as RestUsersEditController;
-use App\Presentation\Controller\Web\UsersEditController as WebUsersEditController;
 use App\Presentation\Controller\Web\UsersIndexController as WebUsersIndexController;
 use App\Presentation\Controller\Web\UsersViewController as WebUsersViewController;
+use App\Presentation\Controller\Web\UsersAddController as WebUsersAddController;
+use App\Presentation\Controller\Web\UsersEditController as WebUsersEditController;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -21,6 +23,8 @@ $app->group('', function (RouteCollectorProxy $group) {
     $group->get('/users/{id:\d+}', WebUsersViewController::class);
     $group->get('/users/edit/{id:\d+}', WebUsersEditController::class);
     $group->post('/users/edit/{id:\d+}', WebUsersEditController::class);
+    $group->get('/users/add', WebUsersAddController::class);
+    $group->post('/users/add', WebUsersAddController::class);
 });
 
 $RestMiddleware = function (Request $request, RequestHandlerInterface $handler) {
@@ -31,6 +35,7 @@ $RestMiddleware = function (Request $request, RequestHandlerInterface $handler) 
 
 $app->group('/api', function (RouteCollectorProxy $group) {
     $group->get('/users', RestUsersIndexController::class);
+    $group->post('/users/', RestUsersAddController::class);
     $group->get('/users/{id:\d+}', RestUsersViewController::class);
     $group->put('/users/{id:\d+}', RestUsersEditController::class);
 })->add($RestMiddleware);

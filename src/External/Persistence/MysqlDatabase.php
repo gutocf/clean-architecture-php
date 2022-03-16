@@ -18,6 +18,9 @@ class MysqlDatabase implements DatabaseInterface
         $this->connection = new Connection(compact('driver'));
     }
 
+    /**
+     * @inheritdoc
+     */
     public function execute(string $query)
     {
         $statement = $this->connection->execute($query);
@@ -25,6 +28,9 @@ class MysqlDatabase implements DatabaseInterface
         return $statement->fetchAll(StatementInterface::FETCH_TYPE_OBJ);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function select(string $table, array $fields, array $conditions): array
     {
         $query = $this->connection->newQuery();
@@ -35,11 +41,19 @@ class MysqlDatabase implements DatabaseInterface
         return $query->execute()->fetchAll(StatementInterface::FETCH_TYPE_OBJ) ?? [];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function insert(string $table, array $data): bool
     {
-        return false;
+        $statement = $this->connection->insert('users', $data);
+
+        return $statement->count() > 0;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function update(string $table, array $data, array $conditions): bool
     {
         $statement = $this->connection->update($table, $data, $conditions);
@@ -47,8 +61,13 @@ class MysqlDatabase implements DatabaseInterface
         return $statement->rowCount() > 0;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function delete(array $conditions): bool
     {
-        return false;
+        $statement = $this->connection->delete('users', $conditions);
+
+        return $statement->count() > 0;
     }
 }

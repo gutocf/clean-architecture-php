@@ -7,7 +7,7 @@
 <div class="px-4 py-5 my-5 text-center">
     <h1 class="display-5 fw-bold">Usuários</h1>
     <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Editar usuário.</p>
+        <p class="lead mb-4">Incluir usuário.</p>
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
         </div>
     </div>
@@ -21,17 +21,21 @@
     </div>
     {% endif %}
 
-    <input name="id" type="hidden" value="{{ updateUserData.id|e }}">
-
     <div class="form-floating mb-3">
-        <input name="name" type="text" class="form-control" placeholder="John Doe" value="{{ updateUserData.name|e }}">
+        <input name="name" type="text" class="form-control" placeholder="John Doe" value="{{ addUserData.name|e }}">
         <label>Nome</label>
     </div>
 
     <div class="form-floating mb-3">
         <input name="email" type="email" class="form-control" placeholder="johndoe@example.com"
-            value="{{ updateUserData.email|e }}">
+            value="{{ addUserData.email|e }}">
         <label>E-mail</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input name="password" type="password" class="form-control" placeholder="********"
+            value="{{ addUserData.password|e }}">
+        <label>Senha</label>
     </div>
 
     <div class="py-3 text-end">

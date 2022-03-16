@@ -7,28 +7,35 @@ use App\Entity\User;
 interface UserRepositoryInterface
 {
     /**
-     * Retrieves user data by its id.
+     * Finds an user by its email.
      *
      * @return \App\Entity\User|null
      */
     public function findById(int $id): ?User;
 
     /**
-     * Retrieves user data by its email.
+     * Finds an user by its email.
      *
      * @return \App\Entity\User|null
      */
-    public function findByEmail(string $email): ?User;
+    public function findByEmail(?string $email): ?User;
 
     /**
-     *  Retrieves all users data.
+     *  Retrieves all users.
      *
      * @return \App\Entity\User[]
      */
     public function findAll(): array;
 
     /**
-     * Updates user data.
+     * Creates an user
+     *
+     * @return bool
+     */
+    public function create(User $user): bool;
+
+    /**
+     * Updates an user.
      *
      * @return bool
      */
