@@ -2,6 +2,7 @@
 
 namespace App\UseCase\User;
 
+use App\UseCase\Port\User\ViewUserData;
 use App\UseCase\Port\UserData;
 use App\UseCase\Port\UserRepositoryInterface;
 
@@ -14,10 +15,20 @@ class ViewUser
     /**
      * Finds a user by its ID.
      *
-     * @return \App\UseCase\Port\UserData|null
+     * @return \App\UseCase\Port\User\ViewUserData|null
      */
-    public function view(int $id): ?UserData
+    public function view(int $id): ?ViewUserData
     {
-        return $this->repository->findById($id);
+        $user = $this->repository->findById($id);
+
+        if (!$user) {
+            return null;
+        }
+
+        return new ViewUserData(
+            $user->getId(),
+            $user->getName(),
+            $user->getEmail(),
+        );
     }
 }

@@ -1,20 +1,18 @@
 <?php
 
-namespace App\UseCase\Port;
+namespace App\UseCase\Port\User;
 
 /**
  * @property int $id
  * @property string $name
  * @property string $email
- * @property string $password
  */
-class UserData
+class ListUserData
 {
     public function __construct(
         public int $id,
         public string $name,
         public string $email,
-        public string $password
     ) {
     }
 }

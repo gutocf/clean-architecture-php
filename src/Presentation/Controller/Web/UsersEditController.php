@@ -3,8 +3,8 @@
 namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
+use App\UseCase\Port\User\UpdateUserData;
 use App\UseCase\User\UpdateUser;
-use App\UseCase\User\ViewUser;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
@@ -14,14 +14,15 @@ class UsersEditController implements ControllerInterface
 
     public function __construct(
         private UpdateUser $updateUser,
-        private ViewUser $viewUser,
         private Environment $twig
     ) {
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
     {
-        $user = $this->viewUser->view($args['id']);
+        $id = intval($args['id']);
+
+        $user = $this->updateUser->get($id);
 
         if (!$user) {
             return $response->withStatus(404);
@@ -29,9 +30,14 @@ class UsersEditController implements ControllerInterface
 
         if ($request->getMethod() === 'POST') {
             $data = $request->getParsedBody();
-            $user->name = $data['name'];
-            $user->email = $data['email'];
-            $this->updateUser->update($user);
+
+            $updateUserData = new UpdateUserData(
+                $id,
+                $data['name'],
+                $data['email']
+            );
+
+            $this->updateUser->update($updateUserData);
 
             return $response
                 ->withStatus(302)

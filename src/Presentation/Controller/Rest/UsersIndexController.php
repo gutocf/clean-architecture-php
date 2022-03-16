@@ -3,6 +3,7 @@
 namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
+use App\UseCase\Port\User\ListUserData;
 use App\UseCase\Port\UserData;
 use App\UseCase\User\ListUser;
 use App\UseCase\UsersIndexUseCase;
@@ -25,7 +26,7 @@ class UsersIndexController implements ControllerInterface
         $uri = $request->getUri();
 
         $users = collection($this->listUser->list())
-            ->map(function (UserData $user) use ($uri) {
+            ->map(function (ListUserData $user) use ($uri) {
                 return [
                     'id' => $user->id,
                     'name' => $user->name,

@@ -2,6 +2,8 @@
 
 namespace App\UseCase\User;
 
+use App\Entity\User;
+use App\UseCase\Port\User\ListUserData;
 use App\UseCase\Port\UserRepositoryInterface;
 
 class ListUser
@@ -10,8 +12,22 @@ class ListUser
     {
     }
 
-    public function list()
+    /**
+     * Retrieves all users data.
+     *
+     * @return ListUserData[]
+     */
+    public function list(): array
     {
-        return $this->repository->findAll();
+        $users = $this->repository->findAll();
+
+        return collection($users)
+            ->map(function (User $user) {
+                return new ListUserData(
+                    $user->getId(),
+                    $user->getName(),
+                    $user->getEmail(),
+                );
+            })->toArray();
     }
 }

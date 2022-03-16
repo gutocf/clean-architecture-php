@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\External\Repository\Mysql;
 
+use App\Entity\User;
 use App\External\Persistence\DatabaseInterface;
-use App\UseCase\Port\UserData;
 use App\UseCase\Port\UserRepositoryInterface;
-use RuntimeException;
 
 /**
  * @property \App\External\Persistence\DatabaseInterface $database
@@ -20,17 +19,15 @@ class MysqlUserRepository implements UserRepositoryInterface
     }
 
     /**
-     * Retrieves user data by its id.
-     *
-     * @return UserData
+     * @inheritdoc
      */
-    public function findById(int $id): ?UserData
+    public function findById(int $id): ?User
     {
         $records = $this->database->select('users', ['id', 'name', 'email', 'password'], ['id' => $id]);
 
         return collection($records)
             ->map(function ($record) {
-                return new UserData(
+                return new User(
                     intval($record->id),
                     $record->name,
                     $record->email,
@@ -41,8 +38,25 @@ class MysqlUserRepository implements UserRepositoryInterface
     }
 
     /**
-     * Retrieves all users data.
-     *
+     * @inheritdoc
+     */
+    public function findByEmail(string $email): ?User
+    {
+        $records = $this->database->select('users', ['id', 'name', 'email', 'password'], ['email' => $email]);
+
+        return collection($records)
+            ->map(function ($record) {
+                return new User(
+                    intval($record->id),
+                    $record->name,
+                    $record->email,
+                    $record->password
+                );
+            })
+            ->first();
+    }
+
+    /**
      * @inheritdoc
      */
     public function findAll(): array
@@ -51,7 +65,7 @@ class MysqlUserRepository implements UserRepositoryInterface
 
         return collection($records)
             ->map(function ($record) {
-                return new UserData(
+                return new User(
                     intval($record->id),
                     $record->name,
                     $record->email,
@@ -61,14 +75,16 @@ class MysqlUserRepository implements UserRepositoryInterface
             ->toArray();
     }
 
-    public function update(UserData $userData): bool
+    /**
+     * @inheritdoc
+     */
+    public function update(User $user): bool
     {
         $data = [
-            'name' => $userData->name,
-            'email' => $userData->email,
-            'password' => $userData->password,
+            'name' => $user->getName(),
+            'email' => $user->getEmail(),
         ];
-        $conditions = ['id' => $userData->id];
+        $conditions = ['id' => $user->getId()];
 
         return $this->database->update('users', $data, $conditions);
     }

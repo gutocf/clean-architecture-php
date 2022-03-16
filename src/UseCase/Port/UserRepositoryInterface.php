@@ -2,19 +2,28 @@
 
 namespace App\UseCase\Port;
 
+use App\Entity\User;
+
 interface UserRepositoryInterface
 {
     /**
      * Retrieves user data by its id.
      *
-     * @return \App\UseCase\Port\UserData|null
+     * @return \App\Entity\User|null
      */
-    public function findById(int $id): ?UserData;
+    public function findById(int $id): ?User;
+
+    /**
+     * Retrieves user data by its email.
+     *
+     * @return \App\Entity\User|null
+     */
+    public function findByEmail(string $email): ?User;
 
     /**
      *  Retrieves all users data.
      *
-     * @return \App\UseCase\Port\UserData[]
+     * @return \App\Entity\User[]
      */
     public function findAll(): array;
 
@@ -23,5 +32,5 @@ interface UserRepositoryInterface
      *
      * @return bool
      */
-    public function update(UserData $userData): bool;
+    public function update(User $user): bool;
 }
