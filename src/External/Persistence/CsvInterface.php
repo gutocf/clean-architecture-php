@@ -4,6 +4,20 @@ namespace App\External\Persistence;
 
 interface CsvInterface
 {
-    public function read(string $file);
-    public function write(string $file, array $data);
+    /**
+     * Reads a CSV file and returns all records.
+     *
+     * @param string $filename Name of the file to read.
+     * @return array
+     */
+    public function read(string $filename): array;
+
+    /**
+     * Writes a CSV file. Override the existing file.
+     *
+     * @param string $filename Name of the file to write.
+     * @param array $records Records to write.
+     * @return bool
+     */
+    public function write(string $filename, array $records);
 }

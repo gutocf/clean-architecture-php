@@ -1,6 +1,7 @@
 <?php
 
 define('DS', DIRECTORY_SEPARATOR);
+define('ROOT', __DIR__ . DS);
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;

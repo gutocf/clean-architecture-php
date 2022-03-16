@@ -5,7 +5,6 @@ namespace App\External\Repository\Csv;
 use App\External\Persistence\CsvInterface;
 use App\UseCase\Port\UserData;
 use App\UseCase\Port\UserRepositoryInterface;
-use RuntimeException;
 
 /**
  * @property \App\External\Persistence\CsVInterface $csv
@@ -43,8 +42,21 @@ class CsvUserRepository implements UserRepositoryInterface
             ->toArray();
     }
 
-    public function update(UserData $data): UserData
+    public function update(UserData $userData): bool
     {
-        throw new RuntimeException('Not implemented yet.');
+        $records = $this->csv->read('users');
+        $records = collection($records)
+            ->map(function ($record) use ($userData) {
+                if (intval($record[0]) === $userData->id) {
+                    $record[1] = $userData->name;
+                    $record[2] = $userData->email;
+                    $record[3] = $userData->password;
+                }
+
+                return $record;
+            })
+            ->toArray();
+
+        return $this->csv->write('users', $records);
     }
 }
