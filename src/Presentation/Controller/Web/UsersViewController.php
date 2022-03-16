@@ -3,7 +3,9 @@
 namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
+use App\UseCase\Port\User\ViewUserData;
 use App\UseCase\User\ViewUser;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
@@ -22,15 +24,25 @@ class UsersViewController implements ControllerInterface
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
     {
-        $user = $this->viewUser->view(intval($args['id']));
+        $id = intval($args['id']);
 
-        if (!$user) {
-            return $response->withStatus(404);
+        try {
+            $user = $this->viewUser->view($id);
+
+            $userViewData = new ViewUserData(
+                $user->getId(),
+                $user->getName(),
+                $user->getEmail()
+            );
+
+            $html = $this->twig->render('/users/view.html', compact('userViewData'));
+            $response->getBody()->write($html);
+
+            return $response;
+        } catch (Exception $ex) {
+            return $response
+                ->withStatus(302)
+                ->withHeader('Location', '/users');
         }
-
-        $html = $this->twig->render('/users/view.html', compact('user'));
-        $response->getBody()->write($html);
-
-        return $response;
     }
 }

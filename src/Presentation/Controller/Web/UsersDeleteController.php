@@ -1,41 +1,36 @@
 <?php
 
-namespace App\Presentation\Controller\Rest;
+namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\ViewUserData;
+use App\UseCase\User\DeleteUser;
 use App\UseCase\User\Exception\UserNotFoundException;
-use App\UseCase\User\ViewUser;
 use Exception;
 use Laminas\Json\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Twig\Environment;
 
 /**
  * @property \App\UseCase\UsersIndexUseCase $useCase
  */
-class UsersViewController implements ControllerInterface
+class UsersDeleteController implements ControllerInterface
 {
 
-    public function __construct(private ViewUser $viewUser)
-    {
+    public function __construct(
+        private DeleteUser $deleteUser,
+        private Environment $twig
+    ) {
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
     {
         try {
             $id = intval($args['id']);
-            $user = $this->viewUser->view($id);
-
-            $userViewData = new ViewUserData(
-                $user->getId(),
-                $user->getName(),
-                $user->getEmail(),
-            );
-
-            $response->getBody()->write(Json::encode(['user' => $userViewData]));
-
-            return $response;
+            $this->deleteUser->delete($id);
+            return $response
+                ->withStatus(302)
+                ->withHeader('Location', '/users');
         } catch (UserNotFoundException $ex) {
             $response->getBody()->write(Json::encode(['error' => $ex->getMessage()]));
 

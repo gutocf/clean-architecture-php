@@ -28,6 +28,10 @@
                 <a href="/users/edit/{{ user.id|e }}" class="btn btn-light">
                     <i class="fas fa-edit"></i> Editar
                 </a>
+                <a href="/users/delete/{{ user.id|e }}" class="btn btn-danger"
+                    onclick="return confirm('Excluir registro?')">
+                    <i class="fas fa-times-circle"></i> Excluir
+                </a>
             </div>
         </div>
     </li>

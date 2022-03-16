@@ -64,7 +64,7 @@ class MysqlDatabase implements DatabaseInterface
     /**
      * @inheritdoc
      */
-    public function delete(array $conditions): bool
+    public function delete(string $table, array $conditions): bool
     {
         $statement = $this->connection->delete('users', $conditions);
 

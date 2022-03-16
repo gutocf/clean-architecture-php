@@ -2,30 +2,26 @@
 
 namespace App\UseCase\User;
 
-use App\Entity\User;
 use App\UseCase\Port\UserRepositoryInterface;
 use App\UseCase\User\Exception\UserNotFoundException;
 
-class ViewUser
+class DeleteUser
 {
     public function __construct(private UserRepositoryInterface $repository)
     {
     }
 
     /**
-     * Finds a user by its ID.
-     *
-     * @throws UserNotFoundException
-     * @return \App\Entity\User
+     * @inheritdoc
      */
-    public function view(int $id): User
+    public function delete(int $id): bool
     {
         $user = $this->repository->findById($id);
 
-        if (!$user) {
+        if ($user === null) {
             throw new UserNotFoundException();
         }
 
-        return $user;
+        return $this->repository->delete($user);
     }
 }

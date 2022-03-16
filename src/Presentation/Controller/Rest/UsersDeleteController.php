@@ -3,9 +3,8 @@
 namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\ViewUserData;
+use App\UseCase\User\DeleteUser;
 use App\UseCase\User\Exception\UserNotFoundException;
-use App\UseCase\User\ViewUser;
 use Exception;
 use Laminas\Json\Json;
 use Psr\Http\Message\ResponseInterface;
@@ -14,10 +13,10 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * @property \App\UseCase\UsersIndexUseCase $useCase
  */
-class UsersViewController implements ControllerInterface
+class UsersDeleteController implements ControllerInterface
 {
 
-    public function __construct(private ViewUser $viewUser)
+    public function __construct(private DeleteUser $deleteUser)
     {
     }
 
@@ -25,15 +24,10 @@ class UsersViewController implements ControllerInterface
     {
         try {
             $id = intval($args['id']);
-            $user = $this->viewUser->view($id);
 
-            $userViewData = new ViewUserData(
-                $user->getId(),
-                $user->getName(),
-                $user->getEmail(),
-            );
+            $this->deleteUser->delete($id);
 
-            $response->getBody()->write(Json::encode(['user' => $userViewData]));
+            $response->getBody()->write(Json::encode(['message' => 'User deleted']));
 
             return $response;
         } catch (UserNotFoundException $ex) {

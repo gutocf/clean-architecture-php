@@ -8,5 +8,5 @@ interface DatabaseInterface
     public function select(string $table, array $fields, array $conditions): array;
     public function insert(string $table, array $data): bool;
     public function update(string $table, array $data, array $conditions): bool;
-    public function delete(array $conditions):bool;
+    public function delete(string $table, array $conditions): bool;
 }

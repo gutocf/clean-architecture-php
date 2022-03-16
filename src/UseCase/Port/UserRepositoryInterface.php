@@ -30,6 +30,7 @@ interface UserRepositoryInterface
     /**
      * Creates an user
      *
+     * @param \App\Entity\User $user
      * @return bool
      */
     public function create(User $user): bool;
@@ -37,7 +38,16 @@ interface UserRepositoryInterface
     /**
      * Updates an user.
      *
+     * @param \App\Entity\User $user
      * @return bool
      */
     public function update(User $user): bool;
+
+    /**
+     * Deletes an user.
+     *
+     * @param \App\Entity\User $user
+     * @return bool
+     */
+    public function delete(User $user): bool;
 }

@@ -106,4 +106,18 @@ class CsvUserRepository implements UserRepositoryInterface
 
         return $this->csv->write('users', $records);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function delete(User $user): bool
+    {
+        $records = collection($this->csv->read('users'))
+            ->filter(function (array $data) use ($user) {
+                return intval($data[0]) !== $user->getId();
+            })
+            ->toArray();
+
+        return $this->csv->write('users', $records);
+    }
 }

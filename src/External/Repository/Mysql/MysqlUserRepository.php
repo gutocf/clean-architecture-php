@@ -106,4 +106,11 @@ class MysqlUserRepository implements UserRepositoryInterface
 
         return $this->database->update('users', $data, $conditions);
     }
+
+    public function delete(User $user): bool
+    {
+        $conditions = ['id' => $user->getId()];
+
+        return $this->database->delete('users', $conditions);
+    }
 }
