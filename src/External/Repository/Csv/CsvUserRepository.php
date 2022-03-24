@@ -74,10 +74,16 @@ class CsvUserRepository implements UserRepositoryInterface
     {
         $records = $this->csv->read('users');
 
-        $id = count($records) + 1;
+        $id = collection($records)
+            ->map(function ($record) {
+                return ['id' => intval($record[0])];
+            })
+            ->sortBy('id', SORT_ASC)
+            ->extract('id')
+            ->last();
 
         $records[] = [
-            $id,
+            ++$id,
             $user->getName(),
             $user->getEmail(),
             $user->getPassword()
