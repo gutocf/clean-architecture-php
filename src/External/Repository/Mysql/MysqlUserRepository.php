@@ -42,7 +42,7 @@ class MysqlUserRepository implements UserRepositoryInterface
      */
     public function findByEmail(?string $email): ?User
     {
-        if(!$email){
+        if (!$email) {
             return null;
         }
 
@@ -63,9 +63,9 @@ class MysqlUserRepository implements UserRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function findAll(): array
+    public function findAll(int $start = 0, int $offset = 10): array
     {
-        $records = $this->database->select('users', ['id', 'name', 'email', 'password'], []);
+        $records = $this->database->select('users', ['id', 'name', 'email', 'password'], [], $start, $offset);
 
         return collection($records)
             ->map(function ($record) {

@@ -51,7 +51,7 @@ class CsvUserRepository implements UserRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function findAll(): array
+    public function findAll(int $start = 0, int $offset = 10): array
     {
         $records = $this->csv->read('users');
 
@@ -64,6 +64,8 @@ class CsvUserRepository implements UserRepositoryInterface
                     $record[3]
                 );
             })
+            ->skip($start)
+            ->take($offset)
             ->toArray();
     }
 

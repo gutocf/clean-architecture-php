@@ -31,12 +31,14 @@ class MysqlDatabase implements DatabaseInterface
     /**
      * @inheritdoc
      */
-    public function select(string $table, array $fields, array $conditions): array
+    public function select(string $table, array $fields, array $conditions, int $start = 0, int $offset = 10): array
     {
         $query = $this->connection->newQuery();
         $query->select($fields)
             ->from($table)
-            ->where($conditions);
+            ->where($conditions)
+            ->offset($start)
+            ->limit($offset);
 
         return $query->execute()->fetchAll(StatementInterface::FETCH_TYPE_OBJ) ?? [];
     }

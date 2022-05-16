@@ -17,9 +17,9 @@ class ListUser
      *
      * @return ListUserData[]
      */
-    public function list(): array
+    public function list(int $start = 0, int $offset = 10): array
     {
-        $users = $this->repository->findAll();
+        $users = $this->repository->findAll($start, $offset);
 
         return collection($users)
             ->map(function (User $user) {

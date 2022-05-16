@@ -22,6 +22,8 @@ class UsersIndexController implements ControllerInterface
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
     {
+        $s
+
         $users = $this->listUser->list();
         $html = $this->twig->render('/users/index.html', compact('users'));
         $response->getBody()->write($html);

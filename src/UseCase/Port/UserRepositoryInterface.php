@@ -23,9 +23,11 @@ interface UserRepositoryInterface
     /**
      *  Retrieves all users.
      *
+     * @param int $start Index of the first user to retrieve.
+     * @param int $offset Number of users to retrieve.
      * @return \App\Entity\User[]
      */
-    public function findAll(): array;
+    public function findAll(int $start = 0, int $offset = 10): array;
 
     /**
      * Creates an user
