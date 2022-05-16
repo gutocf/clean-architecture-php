@@ -10,9 +10,9 @@ namespace App\UseCase\Port\User;
 class AddUserData
 {
     public function __construct(
-        public ?string $name,
-        public ?string $email,
-        public ?string $password
+        public ?string $name = null,
+        public ?string $email = null,
+        public ?string $password = null
     ) {
     }
 }

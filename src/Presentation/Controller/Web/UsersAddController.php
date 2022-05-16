@@ -23,6 +23,8 @@ class UsersAddController implements ControllerInterface
     {
         $error = null;
 
+        $addUserData = new AddUserData();
+
         if ($request->getMethod() === 'POST') {
             try {
                 $data = $request->getParsedBody();
