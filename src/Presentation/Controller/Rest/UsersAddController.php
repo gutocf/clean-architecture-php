@@ -23,7 +23,7 @@ class UsersAddController implements ControllerInterface
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
     {
         try {
-            $data = Json::decode($request->getBody()->getContents(), Json::TYPE_ARRAY);
+            $data = $request->getParsedBody();
 
             $addUserData = new AddUserData(
                 $data['name'] ?? null,

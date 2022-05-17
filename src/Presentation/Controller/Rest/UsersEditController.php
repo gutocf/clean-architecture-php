@@ -25,7 +25,7 @@ class UsersEditController implements ControllerInterface
         $id = intval($args['id']);
 
         try {
-            $data = Json::decode($request->getBody()->getContents(), Json::TYPE_ARRAY);
+            $data = $request->getParsedBody();
 
             $updateUserData = new UpdateUserData(
                 $id,
