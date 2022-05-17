@@ -4,9 +4,10 @@ namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
 use App\UseCase\Port\User\ListUserData;
-use App\UseCase\Port\UserData;
+use App\UseCase\User\CountUser;
 use App\UseCase\User\ListUser;
-use App\UseCase\UsersIndexUseCase;
+use App\Util\Pagination\Exception\PaginationException;
+use App\Util\Pagination\PageInfoFactory;
 use Laminas\Json\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,15 +18,41 @@ use Psr\Http\Message\ServerRequestInterface;
 class UsersIndexController implements ControllerInterface
 {
 
-    public function __construct(private ListUser $listUser)
-    {
+    public function __construct(
+        private ListUser $listUser,
+        private CountUser $countUser
+    ) {
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
     {
+        try {
+            $pageInfo = PageInfoFactory::create($request, $this->countUser->count());
+            $users = $this->listUser->list($pageInfo);
+            $users = $this->formatOutput($request, $users);
+            $response->getBody()->write(Json::encode(compact('users', 'pageInfo')));
+        } catch (PaginationException $ex) {
+            $response->getBody()->write(Json::encode([
+                'error' => $ex->getMessage(),
+                'code' => $ex->getCode(),
+            ]));
+        }
+
+        return $response;
+    }
+
+    /**
+     * Formats the output data.
+     *
+     * @param ServerRequestInterface $request
+     * @param ListUserData[] $users
+     * @return array
+     */
+    private function formatOutput(ServerRequestInterface $request, array $users): array
+    {
         $uri = $request->getUri();
 
-        $users = collection($this->listUser->list())
+        return collection($users)
             ->map(function (ListUserData $user) use ($uri) {
                 return [
                     'id' => $user->id,
@@ -34,6 +61,7 @@ class UsersIndexController implements ControllerInterface
                     '_links' => [
                         'href' => $uri
                             ->withPath($uri->getPath() . '/' . $user->id)
+                            ->withQuery('')
                             ->__toString(),
                         'type' => 'GET',
                         'rel'  => 'self',
@@ -41,9 +69,5 @@ class UsersIndexController implements ControllerInterface
                 ];
             })
             ->toArray();
-
-        $response->getBody()->write(Json::encode(compact('users')));
-
-        return $response;
     }
 }

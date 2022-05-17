@@ -44,7 +44,7 @@ class UsersAddController implements ControllerInterface
             }
         }
 
-        $html = $this->twig->render('/users/add.html', compact('addUserData', 'error'));
+        $html = $this->twig->render('/users/add.twig', compact('addUserData', 'error'));
         $response->getBody()->write($html);
 
         return $response;

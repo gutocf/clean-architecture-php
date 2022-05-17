@@ -30,6 +30,12 @@ interface UserRepositoryInterface
     public function findAll(int $start = 0, int $offset = 10): array;
 
     /**
+     * Counts users.
+     *
+     * @return int
+     */
+    public function count(): int;
+    /**
      * Creates an user
      *
      * @param \App\Entity\User $user

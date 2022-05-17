@@ -55,7 +55,7 @@ class UsersEditController implements ControllerInterface
             $error = $ex->getMessage();
         }
 
-        $html = $this->twig->render('/users/edit.html', compact('updateUserData', 'error'));
+        $html = $this->twig->render('/users/edit.twig', compact('updateUserData', 'error'));
         $response->getBody()->write($html);
 
         return $response;

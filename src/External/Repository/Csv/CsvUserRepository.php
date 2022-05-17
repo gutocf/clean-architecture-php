@@ -5,13 +5,14 @@ namespace App\External\Repository\Csv;
 use App\Entity\User;
 use App\External\Persistence\CsvInterface;
 use App\UseCase\Port\UserRepositoryInterface;
-use RuntimeException;
 
 /**
  * @property \App\External\Persistence\CsVInterface $csv
  */
 class CsvUserRepository implements UserRepositoryInterface
 {
+    private const FILENAME = 'users';
+
     public function __construct(private CsvInterface $csv)
     {
     }
@@ -53,9 +54,11 @@ class CsvUserRepository implements UserRepositoryInterface
      */
     public function findAll(int $start = 0, int $offset = 10): array
     {
-        $records = $this->csv->read('users');
+        $records = $this->csv->read(self::FILENAME);
 
         return collection($records)
+            ->skip($start)
+            ->take($offset)
             ->map(function ($record) {
                 return new User(
                     intval($record[0]),
@@ -64,9 +67,15 @@ class CsvUserRepository implements UserRepositoryInterface
                     $record[3]
                 );
             })
-            ->skip($start)
-            ->take($offset)
             ->toArray();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function count(): int
+    {
+        return $this->csv->count(self::FILENAME);
     }
 
     /**
@@ -74,7 +83,7 @@ class CsvUserRepository implements UserRepositoryInterface
      */
     public function create(User $user): bool
     {
-        $records = $this->csv->read('users');
+        $records = $this->csv->read(self::FILENAME);
 
         $id = collection($records)
             ->map(function ($record) {
@@ -91,7 +100,7 @@ class CsvUserRepository implements UserRepositoryInterface
             $user->getPassword()
         ];
 
-        return $this->csv->write('users', $records);
+        return $this->csv->write(self::FILENAME, $records);
     }
 
     /**
@@ -99,7 +108,7 @@ class CsvUserRepository implements UserRepositoryInterface
      */
     public function update(User $user): bool
     {
-        $records = $this->csv->read('users');
+        $records = $this->csv->read(self::FILENAME);
         $records = collection($records)
             ->map(function ($record) use ($user) {
                 if (intval($record[0]) === $user->getId()) {
@@ -112,7 +121,7 @@ class CsvUserRepository implements UserRepositoryInterface
             })
             ->toArray();
 
-        return $this->csv->write('users', $records);
+        return $this->csv->write(self::FILENAME, $records);
     }
 
     /**
@@ -120,12 +129,12 @@ class CsvUserRepository implements UserRepositoryInterface
      */
     public function delete(User $user): bool
     {
-        $records = collection($this->csv->read('users'))
+        $records = collection($this->csv->read(self::FILENAME))
             ->filter(function (array $data) use ($user) {
                 return intval($data[0]) !== $user->getId();
             })
             ->toArray();
 
-        return $this->csv->write('users', $records);
+        return $this->csv->write(self::FILENAME, $records);
     }
 }

@@ -35,7 +35,7 @@ class UsersViewController implements ControllerInterface
                 $user->getEmail()
             );
 
-            $html = $this->twig->render('/users/view.html', compact('userViewData'));
+            $html = $this->twig->render('/users/view.twig', compact('userViewData'));
             $response->getBody()->write($html);
 
             return $response;

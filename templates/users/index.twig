@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.twig" %}
 
 {% block title %}Usuários{% endblock %}
 
@@ -36,6 +36,17 @@
         </div>
     </li>
     {% endfor %}
+</div>
+
+<div class="py-3 text-center">
+    <a href="/users?page={{ pageInfo.getPreviousPage()??1 }}&perPage={{ pageInfo.getPerPage() }}"
+        class="btn btn-secondary {% if not pageInfo.hasPreviousPage() %}disabled{% endif %}">
+        &laquo; Anterior
+    </a>
+    <a href="/users?page={{ pageInfo.getNextPage()??pageInfo.getLastPage() }}&perPage={{ pageInfo.getPerPage() }}"
+        class="btn btn-secondary {% if not pageInfo.hasNextPage() %}disabled{% endif %}">
+        Próxima &raquo;
+    </a>
 </div>
 
 <div class="py-3 text-end">

@@ -20,6 +20,7 @@ use App\Presentation\Controller\Web\UsersEditController as WebUsersEditControlle
 use App\Presentation\Controller\Web\UsersDeleteController as WebUsersDeleteController;
 use App\UseCase\Port\UserRepositoryInterface;
 use App\UseCase\User\AddUser;
+use App\UseCase\User\CountUser;
 use App\UseCase\User\DeleteUser;
 use App\UseCase\User\ListUser;
 use App\UseCase\User\ViewUser;
@@ -33,9 +34,10 @@ return [
     DatabaseInterface::class => create(MysqlDatabase::class),
     CsvInterface::class => create(LeagueCsv::class),
     UserRepositoryInterface::class => create(MysqlUserRepository::class)->constructor(get(DatabaseInterface::class)),
-    UserRepositoryInterface::class => create(CsvUserRepository::class)->constructor(get(CsvInterface::class)),
+    // UserRepositoryInterface::class => create(CsvUserRepository::class)->constructor(get(CsvInterface::class)),
 
     ListUser::class => create()->constructor(get(UserRepositoryInterface::class)),
+    CountUser::class => create()->constructor(get(UserRepositoryInterface::class)),
     ViewUser::class => create()->constructor(get(UserRepositoryInterface::class)),
     AddUser::class => create()->constructor(get(UserRepositoryInterface::class)),
     UpdateUser::class => create()->constructor(get(UserRepositoryInterface::class)),
@@ -48,13 +50,13 @@ return [
         ]);
     },
 
-    RestUsersIndexController::class => create()->constructor(get(ListUser::class)),
+    RestUsersIndexController::class => create()->constructor(get(ListUser::class), get(CountUser::class)),
     RestUsersViewController::class => create()->constructor(get(ViewUser::class)),
     RestUsersAddController::class => create()->constructor(get(AddUser::class), get(Environment::class)),
     RestUsersEditController::class => create()->constructor(get(UpdateUser::class), get(Environment::class)),
     RestUsersDeleteController::class => create()->constructor(get(DeleteUser::class), get(Environment::class)),
 
-    WebUsersIndexController::class => create()->constructor(get(ListUser::class), get(Environment::class)),
+    WebUsersIndexController::class => create()->constructor(get(ListUser::class), get(CountUser::class), get(Environment::class)),
     WebUsersViewController::class => create()->constructor(get(ViewUser::class), get(Environment::class)),
     WebUsersAddController::class => create()->constructor(get(AddUser::class), get(Environment::class)),
     WebUsersEditController::class => create()->constructor(get(UpdateUser::class), get(Environment::class)),

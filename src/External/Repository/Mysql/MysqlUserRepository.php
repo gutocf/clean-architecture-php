@@ -96,6 +96,14 @@ class MysqlUserRepository implements UserRepositoryInterface
     /**
      * @inheritdoc
      */
+    public function count(): int
+    {
+        return $this->database->count('users');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function update(User $user): bool
     {
         $data = [
@@ -107,6 +115,9 @@ class MysqlUserRepository implements UserRepositoryInterface
         return $this->database->update('users', $data, $conditions);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function delete(User $user): bool
     {
         $conditions = ['id' => $user->getId()];

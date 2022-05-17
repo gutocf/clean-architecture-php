@@ -13,6 +13,14 @@ interface CsvInterface
     public function read(string $filename): array;
 
     /**
+     * Counts the number of records in a CSV file.
+     *
+     * @param string $filename Name of the file to read.
+     * @return int
+     */
+    public function count(string $filename): int;
+
+    /**
      * Writes a CSV file. Override the existing file.
      *
      * @param string $filename Name of the file to write.

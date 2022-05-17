@@ -5,6 +5,7 @@ namespace App\UseCase\User;
 use App\Entity\User;
 use App\UseCase\Port\User\ListUserData;
 use App\UseCase\Port\UserRepositoryInterface;
+use App\Util\Pagination\PageInfo;
 
 class ListUser
 {
@@ -17,9 +18,9 @@ class ListUser
      *
      * @return ListUserData[]
      */
-    public function list(int $start = 0, int $offset = 10): array
+    public function list(PageInfo $pageInfo): array
     {
-        $users = $this->repository->findAll($start, $offset);
+        $users = $this->repository->findAll($pageInfo->getStart(), $pageInfo->getPerPage());
 
         return collection($users)
             ->map(function (User $user) {

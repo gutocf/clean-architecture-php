@@ -10,7 +10,7 @@ use Database;
 class MysqlDatabase implements DatabaseInterface
 {
 
-    private $connection;
+    private Connection $connection;
 
     public function __construct()
     {
@@ -41,6 +41,19 @@ class MysqlDatabase implements DatabaseInterface
             ->limit($offset);
 
         return $query->execute()->fetchAll(StatementInterface::FETCH_TYPE_OBJ) ?? [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function count(string $table): int
+    {
+        $query = $this->connection->newQuery();
+        $query
+            ->select($query->func()->count('*'))
+            ->from($table);
+
+        return $query->execute()->fetchColumn(0);
     }
 
     /**
