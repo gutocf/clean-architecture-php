@@ -9,6 +9,6 @@ class InvalidPasswordException extends Exception
 
     public function __construct()
     {
-        parent::__construct('Senha não informada', 400);
+        parent::__construct('Invalid password', 400);
     }
 }

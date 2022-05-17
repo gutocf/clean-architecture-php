@@ -9,6 +9,6 @@ class InvalidNameException extends Exception
 
     public function __construct()
     {
-        parent::__construct('Nome não informado', 400);
+        parent::__construct('Invalid name', 400);
     }
 }

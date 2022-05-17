@@ -9,6 +9,6 @@ class UserExistsException extends Exception
 
     public function __construct()
     {
-        parent::__construct('Usuário já existe', 400);
+        parent::__construct('User already exists', 400);
     }
 }
