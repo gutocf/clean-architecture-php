@@ -39,13 +39,21 @@
 </div>
 
 <div class="py-3 text-center">
+    <a href="/users?page={{ pageInfo.getFirstPage()??1 }}&perPage={{ pageInfo.getPerPage() }}"
+        class="btn btn-secondary {% if not pageInfo.hasPreviousPage() %}disabled{% endif %}">
+        &LeftArrowBar; Primeira
+    </a>
     <a href="/users?page={{ pageInfo.getPreviousPage()??1 }}&perPage={{ pageInfo.getPerPage() }}"
         class="btn btn-secondary {% if not pageInfo.hasPreviousPage() %}disabled{% endif %}">
-        &laquo; Anterior
+        &ShortLeftArrow; Anterior
     </a>
     <a href="/users?page={{ pageInfo.getNextPage()??pageInfo.getLastPage() }}&perPage={{ pageInfo.getPerPage() }}"
         class="btn btn-secondary {% if not pageInfo.hasNextPage() %}disabled{% endif %}">
-        Próxima &raquo;
+        Próxima &ShortRightArrow;
+    </a>
+    <a href="/users?page={{ pageInfo.getLastPage() }}&perPage={{ pageInfo.getPerPage() }}"
+        class="btn btn-secondary {% if not pageInfo.hasNextPage() %}disabled{% endif %}">
+        Última &RightArrowBar;
     </a>
 </div>
 
