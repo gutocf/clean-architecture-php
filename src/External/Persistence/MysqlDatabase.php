@@ -3,9 +3,8 @@
 namespace App\External\Persistence;
 
 use Cake\Database\Connection;
-use Cake\Database\Driver\Mysql;
 use Cake\Database\StatementInterface;
-use Database;
+use Cake\Datasource\ConnectionManager;
 
 class MysqlDatabase implements DatabaseInterface
 {
@@ -14,8 +13,7 @@ class MysqlDatabase implements DatabaseInterface
 
     public function __construct()
     {
-        $driver = new Mysql(Database::getConfig('default'));
-        $this->connection = new Connection(compact('driver'));
+        $this->connection = ConnectionManager::get('default');
     }
 
     /**
