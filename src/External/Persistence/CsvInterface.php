@@ -21,7 +21,7 @@ interface CsvInterface
     public function count(string $filename): int;
 
     /**
-     * Writes a CSV file. Override the existing file.
+     * Writes a CSV file. Overrides the existing file.
      *
      * @param string $filename Name of the file to write.
      * @param array $records Records to write.
