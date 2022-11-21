@@ -33,7 +33,7 @@ use function DI\get;
 return [
     DatabaseInterface::class => create(MysqlDatabase::class),
     CsvInterface::class => create(LeagueCsv::class),
-    UserRepositoryInterface::class => create(MysqlUserRepository::class)->constructor(get(DatabaseInterface::class)),
+    // UserRepositoryInterface::class => create(MysqlUserRepository::class)->constructor(get(DatabaseInterface::class)),
     UserRepositoryInterface::class => create(CsvUserRepository::class)->constructor(get(CsvInterface::class)),
 
     ListUser::class => create()->constructor(get(UserRepositoryInterface::class)),

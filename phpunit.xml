@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit testdox="true" colors="true">
+    <testsuites>
+        <testsuite name="all">
+            <directory>tests/</directory>
+        </testsuite>
+    </testsuites>
+    <coverage cacheDirectory="/tmp"
+        includeUncoveredFiles="true"
+        processUncoveredFiles="true"
+        pathCoverage="false"
+        ignoreDeprecatedCodeUnits="true"
+        disableCodeCoverageIgnore="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory suffix="Test.php">tests</directory>
+        </exclude>
+        <report>
+            <html outputDirectory="tmp/html-coverage" lowUpperBound="50" highLowerBound="90" />
+        </report>
+    </coverage>
+    <php>
+        <ini name="memory_limit" value="-1" />
+        <ini name="apc.enable_cli" value="1" />
+    </php>
+</phpunit>

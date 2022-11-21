@@ -1,3 +1,5 @@
 config/.env
-tmp/cache/views/*
 vendor/*
+tmp/*
+!tmp/.gitkeep
+.phpunit.result.cache

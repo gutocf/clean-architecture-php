@@ -25,7 +25,11 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^1.4",
-        "phpunit/phpunit": "9.5",
+        "phpunit/phpunit": "^9.5",
         "josegonzalez/dotenv": "^3.2"
+    },
+    "scripts": {
+        "test": "phpunit --testdox tests/"
     }
+    
 }
