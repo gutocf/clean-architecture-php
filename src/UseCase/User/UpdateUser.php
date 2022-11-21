@@ -7,8 +7,6 @@ use App\UseCase\Port\UserRepositoryInterface;
 use App\UseCase\Port\User\UpdateUserData;
 use App\UseCase\User\Exception\InvalidEmailException;
 use App\UseCase\User\Exception\InvalidNameException;
-use App\UseCase\User\Exception\InvalidPasswordException;
-use App\UseCase\User\Exception\UserExistsException;
 use App\UseCase\User\Exception\UserNotFoundException;
 
 class UpdateUser
