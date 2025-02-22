@@ -19,7 +19,7 @@ if (file_exists($config_file)) {
 }
 
 ConnectionManager::setConfig('default', [
-    'url' => env('CLEARDB_DATABASE_URL'),
+    'url' => env('DATABASE_URL'),
 ]);
 
 $builder =  (new ContainerBuilder())

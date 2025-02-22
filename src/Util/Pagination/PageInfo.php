@@ -76,7 +76,7 @@ class PageInfo implements JsonSerializable
         return $this->page + 1;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'currentPage' => $this->getCurrentPage(),

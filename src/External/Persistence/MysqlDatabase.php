@@ -31,7 +31,7 @@ class MysqlDatabase implements DatabaseInterface
      */
     public function select(string $table, array $fields, array $conditions, int $start = 0, int $offset = 10): array
     {
-        $query = $this->connection->newQuery();
+        $query = $this->connection->selectQuery();
         $query->select($fields)
             ->from($table)
             ->where($conditions)
@@ -46,7 +46,7 @@ class MysqlDatabase implements DatabaseInterface
      */
     public function count(string $table): int
     {
-        $query = $this->connection->newQuery();
+        $query = $this->connection->selectQuery();
         $query
             ->select($query->func()->count('*'))
             ->from($table);
