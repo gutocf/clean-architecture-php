@@ -23,7 +23,7 @@ use App\UseCase\User\CreateUser;
 use App\UseCase\User\DeleteUser;
 use App\UseCase\User\ListUser;
 use App\UseCase\User\UpdateUser;
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 use App\UseCase\User\ViewUser;
 use Twig\Environment;
 
@@ -33,8 +33,8 @@ use function DI\get;
 return [
     DatabaseInterface::class => create(MysqlDatabase::class),
     CsvInterface::class => create(LeagueCsv::class),
-    // UserRepositoryInterface::class => create(MysqlUserRepository::class)->constructor(get(DatabaseInterface::class)),
-    UserRepositoryInterface::class => create(CsvUserRepository::class)->constructor(get(CsvInterface::class)),
+    UserRepositoryInterface::class => create(MysqlUserRepository::class)->constructor(get(DatabaseInterface::class)),
+    // UserRepositoryInterface::class => create(CsvUserRepository::class)->constructor(get(CsvInterface::class)),
 
     ListUser::class => create()->constructor(get(UserRepositoryInterface::class)),
     CountUser::class => create()->constructor(get(UserRepositoryInterface::class)),

@@ -10,7 +10,7 @@ use App\UseCase\User\Exception\InvalidNameException;
 use App\UseCase\User\Exception\UserNotFoundException;
 use App\UseCase\User\Port\UpdateUserParams;
 use App\UseCase\User\UpdateUser;
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class UpdateUserTest extends TestCase

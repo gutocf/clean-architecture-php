@@ -8,7 +8,7 @@ use App\UseCase\User\Exception\InvalidNameException;
 use App\UseCase\User\Exception\UserExistsException;
 use App\UseCase\User\Exception\UserNotFoundException;
 use App\UseCase\User\Port\UpdateUserParams;
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 
 class UpdateUser
 {

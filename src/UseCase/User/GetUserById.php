@@ -3,7 +3,7 @@
 namespace App\UseCase\User;
 
 use App\Entity\User;
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 use App\UseCase\User\Exception\UserNotFoundException;
 
 class GetUserById

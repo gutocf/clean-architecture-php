@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\User;
+namespace App\UseCase\User\Port;
 
 use App\Entity\User;
 

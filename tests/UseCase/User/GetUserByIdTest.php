@@ -5,7 +5,7 @@ namespace App\Test\UseCase\User;
 use App\Entity\User;
 use App\UseCase\User\Exception\UserNotFoundException;
 use App\UseCase\User\GetUserById;
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 final class GetUserByIdTest extends TestCase
@@ -16,7 +16,7 @@ final class GetUserByIdTest extends TestCase
     {
         $expected = User::create(1, 'John Doe', 'johndoe@example.com', 'p@ssw0rd');
         /**
- * @var \PHPUnit\Framework\MockObject\MockObject|\App\UseCase\User\UserRepositoryInterface 
+ * @var \PHPUnit\Framework\MockObject\MockObject|\App\UseCase\User\UserRepositoryInterface
 */
         $repository = $this->createMock(UserRepositoryInterface::class);
         $repository->expects($this->once())
@@ -31,7 +31,7 @@ final class GetUserByIdTest extends TestCase
     public function testGetNonExistingUser()
     {
         /**
- * @var \PHPUnit\Framework\MockObject\MockObject|\App\UseCase\User\UserRepositoryInterface 
+ * @var \PHPUnit\Framework\MockObject\MockObject|\App\UseCase\User\UserRepositoryInterface
 */
         $repository = $this->createMock(UserRepositoryInterface::class);
         $repository->expects($this->once())

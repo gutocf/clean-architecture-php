@@ -2,7 +2,7 @@
 
 namespace App\UseCase\User;
 
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 
 class CountUser
 {

@@ -4,7 +4,7 @@ namespace App\External\Repository\Csv;
 
 use App\Entity\User;
 use App\External\Persistence\CsvInterface;
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 
 /**
  * @property \App\External\Persistence\CsVInterface $csv

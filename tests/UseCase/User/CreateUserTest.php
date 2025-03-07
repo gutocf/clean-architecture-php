@@ -10,7 +10,7 @@ use App\UseCase\User\Exception\InvalidPasswordConfirmationException;
 use App\UseCase\User\Exception\InvalidPasswordException;
 use App\UseCase\User\Exception\UserExistsException;
 use App\UseCase\User\Port\CreateUserParams;
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CreateUserTest extends TestCase

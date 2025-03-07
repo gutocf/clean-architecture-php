@@ -6,7 +6,7 @@ namespace App\External\Repository\Mysql;
 
 use App\Entity\User;
 use App\External\Persistence\DatabaseInterface;
-use App\UseCase\User\UserRepositoryInterface;
+use App\UseCase\User\Port\UserRepositoryInterface;
 
 /**
  * @property \App\External\Persistence\DatabaseInterface $database
