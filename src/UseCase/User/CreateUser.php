@@ -3,11 +3,11 @@
 namespace App\UseCase\User;
 
 use App\Entity\User;
+use App\UseCase\User\Exception\EmailAlreadyInUseException;
 use App\UseCase\User\Exception\InvalidEmailException;
 use App\UseCase\User\Exception\InvalidNameException;
 use App\UseCase\User\Exception\InvalidPasswordConfirmationException;
 use App\UseCase\User\Exception\InvalidPasswordException;
-use App\UseCase\User\Exception\UserExistsException;
 use App\UseCase\User\Port\CreateUserParams;
 use App\UseCase\User\Port\UserRepositoryInterface;
 
@@ -20,7 +20,7 @@ class CreateUser
     public function create(CreateUserParams $data): User
     {
         if ($this->repository->findByEmail($data->email) !== null) {
-            throw new UserExistsException();
+            throw new EmailAlreadyInUseException();
         }
 
         if (empty($data->name)) {
@@ -40,6 +40,7 @@ class CreateUser
         }
 
         $user = new User(
+            id: null,
             name: $data->name,
             email: $data->email,
             password: $data->password

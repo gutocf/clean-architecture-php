@@ -3,8 +3,8 @@
 namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\User\Port\UpdateUserParams;
 use App\UseCase\User\Exception\UserNotFoundException;
+use App\UseCase\User\Port\UpdateUserParams;
 use App\UseCase\User\UpdateUser;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +20,7 @@ class UsersEditController implements ControllerInterface
     ) {
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
     {
         $id = intval($args['id']);
 

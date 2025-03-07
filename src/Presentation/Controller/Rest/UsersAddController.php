@@ -3,8 +3,8 @@
 namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\User\Port\CreateUserParams;
 use App\UseCase\User\CreateUser;
+use App\UseCase\User\Port\CreateUserParams;
 use Exception;
 use Laminas\Json\Json;
 use Psr\Http\Message\ResponseInterface;
@@ -16,7 +16,7 @@ class UsersAddController implements ControllerInterface
     {
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
     {
         try {
             $data = $request->getParsedBody();

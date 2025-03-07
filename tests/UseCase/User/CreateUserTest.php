@@ -8,7 +8,7 @@ use App\UseCase\User\Exception\InvalidEmailException;
 use App\UseCase\User\Exception\InvalidNameException;
 use App\UseCase\User\Exception\InvalidPasswordConfirmationException;
 use App\UseCase\User\Exception\InvalidPasswordException;
-use App\UseCase\User\Exception\UserExistsException;
+use App\UseCase\User\Exception\EmailAlreadyInUseException;
 use App\UseCase\User\Port\CreateUserParams;
 use App\UseCase\User\Port\UserRepositoryInterface;
 use PHPUnit\Framework\TestCase;
@@ -49,7 +49,7 @@ final class CreateUserTest extends TestCase
         $repository->expects($this->once())
             ->method('findByEmail')
             ->willReturn(new User(1, 'John Doe', 'johndoe@example.com', 'p@ssw0rd'));
-        $this->expectException(UserExistsException::class);
+        $this->expectException(EmailAlreadyInUseException::class);
         $this->useCase = new CreateUser($repository);
         $this->useCase->create($data);
     }

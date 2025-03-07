@@ -5,7 +5,7 @@ namespace App\UseCase\User;
 use App\Entity\User;
 use App\UseCase\User\Exception\InvalidEmailException;
 use App\UseCase\User\Exception\InvalidNameException;
-use App\UseCase\User\Exception\UserExistsException;
+use App\UseCase\User\Exception\EmailAlreadyInUseException;
 use App\UseCase\User\Exception\UserNotFoundException;
 use App\UseCase\User\Port\UpdateUserParams;
 use App\UseCase\User\Port\UserRepositoryInterface;
@@ -35,7 +35,7 @@ class UpdateUser
         $user_email = $this->repository->findByEmail($data->email);
 
         if($user_email !== null && $user->getId() !== $user_email->getId()) {
-            throw new UserExistsException();
+            throw new EmailAlreadyInUseException();
         }
 
         $user->setName($data->name);

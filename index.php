@@ -24,7 +24,6 @@ ConnectionManager::setConfig('default', [
 
 $builder =  (new ContainerBuilder())
     ->useAutowiring(false)
-    ->useAnnotations(false)
     ->addDefinitions(__DIR__ . DS . 'config' . DS . 'dependencies.php');
 
 $container = $builder->build();

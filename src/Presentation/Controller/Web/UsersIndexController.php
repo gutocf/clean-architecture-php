@@ -5,7 +5,6 @@ namespace App\Presentation\Controller\Web;
 use App\Presentation\Controller\ControllerInterface;
 use App\UseCase\User\CountUser;
 use App\UseCase\User\ListUser;
-use App\Util\Pagination\PageInfo;
 use App\Util\Pagination\PageInfoFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,7 +23,7 @@ class UsersIndexController implements ControllerInterface
     ) {
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
     {
         $pageInfo = PageInfoFactory::create($request, $this->countUser->count());
         $users = $this->listUser->list($pageInfo);

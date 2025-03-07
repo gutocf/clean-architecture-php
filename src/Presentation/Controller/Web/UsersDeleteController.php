@@ -23,7 +23,7 @@ class UsersDeleteController implements ControllerInterface
     ) {
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
     {
         try {
             $id = intval($args['id']);
