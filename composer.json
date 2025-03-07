@@ -1,5 +1,6 @@
 {
     "name": "gutocf/clean-architecture-php",
+    "description": "PHP with clean architecture application sample",
     "type": "project",
     "license": "MIT",
     "autoload": {
@@ -21,9 +22,9 @@
         "php-di/php-di": "^6.3",
         "slim/slim": "4.*",
         "twig/twig": "^3.0",
-        "guzzlehttp/psr7": "2",
+        "guzzlehttp/psr7": "^2.0",
         "robmorgan/phinx": "^0.14.0",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "^3.11"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.4",
