@@ -3,7 +3,7 @@
 namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\ViewUserData;
+use App\UseCase\User\Port\ViewUserParams;
 use App\UseCase\User\Exception\UserNotFoundException;
 use App\UseCase\User\ViewUser;
 use Exception;
@@ -18,7 +18,7 @@ class UsersViewController implements ControllerInterface
 {
 
     public function __construct(private ViewUser $viewUser)
-    {
+    { 
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, ?array $args = null): ResponseInterface
@@ -27,7 +27,7 @@ class UsersViewController implements ControllerInterface
             $id = intval($args['id']);
             $user = $this->viewUser->view($id);
 
-            $userViewData = new ViewUserData(
+            $userViewData = new ViewUserParams(
                 $user->getId(),
                 $user->getName(),
                 $user->getEmail(),

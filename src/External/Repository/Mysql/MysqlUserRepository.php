@@ -6,7 +6,7 @@ namespace App\External\Repository\Mysql;
 
 use App\Entity\User;
 use App\External\Persistence\DatabaseInterface;
-use App\UseCase\Port\UserRepositoryInterface;
+use App\UseCase\User\UserRepositoryInterface;
 
 /**
  * @property \App\External\Persistence\DatabaseInterface $database
@@ -26,14 +26,16 @@ class MysqlUserRepository implements UserRepositoryInterface
         $records = $this->database->select('users', ['id', 'name', 'email', 'password'], ['id' => $id]);
 
         return collection($records)
-            ->map(function ($record) {
-                return new User(
-                    intval($record->id),
-                    $record->name,
-                    $record->email,
-                    $record->password
-                );
-            })
+            ->map(
+                function ($record) {
+                    return new User(
+                        intval($record->id),
+                        $record->name,
+                        $record->email,
+                        $record->password
+                    );
+                }
+            )
             ->first();
     }
 
@@ -49,14 +51,16 @@ class MysqlUserRepository implements UserRepositoryInterface
         $records = $this->database->select('users', ['id', 'name', 'email', 'password'], ['email' => $email]);
 
         return collection($records)
-            ->map(function ($record) {
-                return new User(
-                    intval($record->id),
-                    $record->name,
-                    $record->email,
-                    $record->password
-                );
-            })
+            ->map(
+                function ($record) {
+                    return new User(
+                        intval($record->id),
+                        $record->name,
+                        $record->email,
+                        $record->password
+                    );
+                }
+            )
             ->first();
     }
 
@@ -68,29 +72,36 @@ class MysqlUserRepository implements UserRepositoryInterface
         $records = $this->database->select('users', ['id', 'name', 'email', 'password'], [], $start, $offset);
 
         return collection($records)
-            ->map(function ($record) {
-                return new User(
-                    intval($record->id),
-                    $record->name,
-                    $record->email,
-                    $record->password
-                );
-            })
+            ->map(
+                function ($record) {
+                    return new User(
+                        intval($record->id),
+                        $record->name,
+                        $record->email,
+                        $record->password
+                    );
+                }
+            )
             ->toArray();
     }
 
     /**
      * @inheritdoc
      */
-    public function create(User $user): bool
+    public function create(User $user): User
     {
-        $this->database->insert('users', [
+        $this->database->insert(
+            'users', [
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'password' => $user->getPassword()
-        ]);
+            ]
+        );
 
-        return true;
+        $records = $this->database->execute('SELECT LAST_INSERT_ID() AS id');
+        $user->setId(intval($records[0]->id));
+
+        return $user;
     }
 
     /**
@@ -104,15 +115,16 @@ class MysqlUserRepository implements UserRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function update(User $user): bool
+    public function update(User $user): User
     {
         $data = [
             'name' => $user->getName(),
             'email' => $user->getEmail(),
         ];
         $conditions = ['id' => $user->getId()];
+        $this->database->update('users', $data, $conditions);
 
-        return $this->database->update('users', $data, $conditions);
+        return $user;
     }
 
     /**

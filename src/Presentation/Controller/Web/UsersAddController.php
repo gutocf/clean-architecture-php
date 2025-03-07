@@ -3,8 +3,8 @@
 namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\AddUserData;
-use App\UseCase\User\AddUser;
+use App\UseCase\User\CreateUser;
+use App\UseCase\User\Port\CreateUserParams;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,7 +14,7 @@ class UsersAddController implements ControllerInterface
 {
 
     public function __construct(
-        private AddUser $addUser,
+        private CreateUser $useCase,
         private Environment $twig
     ) {
     }
@@ -23,18 +23,20 @@ class UsersAddController implements ControllerInterface
     {
         $error = null;
 
-        $addUserData = new AddUserData();
+        $data = new CreateUserParams();
 
         if ($request->getMethod() === 'POST') {
             try {
                 $data = $request->getParsedBody();
 
-                $addUserData = new AddUserData(
+                $data = new CreateUserParams(
                     $data['name'],
                     $data['email'],
-                    $data['password']
+                    $data['password'],
+                    $data['password_confirm'],
                 );
-                $this->addUser->add($addUserData);
+
+                $this->useCase->create($data);
 
                 return $response
                     ->withStatus(302)
@@ -44,7 +46,7 @@ class UsersAddController implements ControllerInterface
             }
         }
 
-        $html = $this->twig->render('/users/add.twig', compact('addUserData', 'error'));
+        $html = $this->twig->render('/users/add.twig', compact('data', 'error'));
         $response->getBody()->write($html);
 
         return $response;

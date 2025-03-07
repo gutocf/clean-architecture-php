@@ -22,20 +22,26 @@
     {% endif %}
 
     <div class="form-floating mb-3">
-        <input name="name" type="text" class="form-control" placeholder="John Doe" value="{{ addUserData.name|e }}">
+        <input name="name" type="text" class="form-control" placeholder="John Doe" value="{{ data.name|e }}">
         <label>Nome</label>
     </div>
 
     <div class="form-floating mb-3">
         <input name="email" type="email" class="form-control" placeholder="johndoe@example.com"
-            value="{{ addUserData.email|e }}">
+            value="{{ data.email|e }}">
         <label>E-mail</label>
     </div>
 
     <div class="form-floating mb-3">
         <input name="password" type="password" class="form-control" placeholder="********"
-            value="{{ addUserData.password|e }}">
+            value="{{ data.password|e }}">
         <label>Senha</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input name="password_confirm" type="password" class="form-control" placeholder="********"
+            value="{{ data.password_confirm|e }}">
+        <label>Repita a senha</label>
     </div>
 
     <div class="py-3 text-end">

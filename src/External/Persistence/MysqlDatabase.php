@@ -59,7 +59,7 @@ class MysqlDatabase implements DatabaseInterface
      */
     public function insert(string $table, array $data): bool
     {
-        $statement = $this->connection->insert('users', $data);
+        $statement = $this->connection->insert($table, $data);
 
         return $statement->count() > 0;
     }
@@ -79,7 +79,7 @@ class MysqlDatabase implements DatabaseInterface
      */
     public function delete(string $table, array $conditions): bool
     {
-        $statement = $this->connection->delete('users', $conditions);
+        $statement = $this->connection->delete($table, $conditions);
 
         return $statement->count() > 0;
     }

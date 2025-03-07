@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\Port;
+namespace App\UseCase\User;
 
 use App\Entity\User;
 
@@ -23,8 +23,8 @@ interface UserRepositoryInterface
     /**
      *  Retrieves all users.
      *
-     * @param int $start Index of the first user to retrieve.
-     * @param int $offset Number of users to retrieve.
+     * @param  int $start  Index of the first user to retrieve.
+     * @param  int $offset Number of users to retrieve.
      * @return \App\Entity\User[]
      */
     public function findAll(int $start = 0, int $offset = 10): array;
@@ -35,26 +35,28 @@ interface UserRepositoryInterface
      * @return int
      */
     public function count(): int;
+
     /**
-     * Creates an user
+     * Creates an user.
      *
-     * @param \App\Entity\User $user
-     * @return bool
+     * @param  User $user
+     * @return \App\Entity\User $user
      */
-    public function create(User $user): bool;
+    public function create(User $user): User;
 
     /**
      * Updates an user.
      *
-     * @param \App\Entity\User $user
-     * @return bool
+     * @param  int              $id
+     * @param  \App\Entity\User $user
+     * @return \App\Entity\User $user
      */
-    public function update(User $user): bool;
+    public function update(User $user): User;
 
     /**
      * Deletes an user.
      *
-     * @param \App\Entity\User $user
+     * @param  \App\Entity\User $user
      * @return bool
      */
     public function delete(User $user): bool;

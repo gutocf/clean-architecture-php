@@ -3,7 +3,7 @@
 namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\UpdateUserData;
+use App\UseCase\User\Port\UpdateUserParams;
 use App\UseCase\User\Exception\UserNotFoundException;
 use App\UseCase\User\UpdateUser;
 use Exception;
@@ -29,7 +29,7 @@ class UsersEditController implements ControllerInterface
         try {
             $user = $this->updateUser->get($id);
 
-            $updateUserData = new UpdateUserData(
+            $updateUserData = new UpdateUserParams(
                 $id,
                 $user->getName(),
                 $user->getEmail()

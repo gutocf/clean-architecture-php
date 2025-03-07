@@ -3,24 +3,23 @@
 namespace App\UseCase\User;
 
 use App\Entity\User;
-use App\UseCase\Port\UserRepositoryInterface;
-use App\UseCase\Port\User\AddUserData;
 use App\UseCase\User\Exception\InvalidEmailException;
 use App\UseCase\User\Exception\InvalidNameException;
+use App\UseCase\User\Exception\InvalidPasswordConfirmationException;
 use App\UseCase\User\Exception\InvalidPasswordException;
 use App\UseCase\User\Exception\UserExistsException;
+use App\UseCase\User\Port\CreateUserParams;
+use App\UseCase\User\UserRepositoryInterface;
 
-class AddUser
+class CreateUser
 {
     public function __construct(private UserRepositoryInterface $repository)
     {
     }
 
-    public function add(AddUserData $data): bool
+    public function create(CreateUserParams $data): User
     {
-        $user = $this->repository->findByEmail($data->email);
-
-        if ($user !== null) {
+        if ($this->repository->findByEmail($data->email) !== null) {
             throw new UserExistsException();
         }
 
@@ -36,7 +35,15 @@ class AddUser
             throw new InvalidPasswordException();
         }
 
-        $user = new User(null, $data->name, $data->email, $data->password);
+        if ($data->password !== $data->password_confirm) {
+            throw new InvalidPasswordConfirmationException();
+        }
+
+        $user = new User(
+            name: $data->name,
+            email: $data->email,
+            password: $data->password
+        );
 
         return $this->repository->create($user);
     }

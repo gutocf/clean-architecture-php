@@ -3,8 +3,8 @@
 namespace App\UseCase\User;
 
 use App\Entity\User;
-use App\UseCase\Port\User\ListUserData;
-use App\UseCase\Port\UserRepositoryInterface;
+use App\UseCase\User\Port\ListUserParams;
+use App\UseCase\User\UserRepositoryInterface;
 use App\Util\Pagination\PageInfo;
 
 class ListUser
@@ -16,19 +16,21 @@ class ListUser
     /**
      * Retrieves all users data.
      *
-     * @return ListUserData[]
+     * @return ListUserParams[]
      */
     public function list(PageInfo $pageInfo): array
     {
         $users = $this->repository->findAll($pageInfo->getStart(), $pageInfo->getPerPage());
 
         return collection($users)
-            ->map(function (User $user) {
-                return new ListUserData(
-                    $user->getId(),
-                    $user->getName(),
-                    $user->getEmail(),
-                );
-            })->toArray();
+            ->map(
+                function (User $user) {
+                    return new ListUserParams(
+                        $user->getId(),
+                        $user->getName(),
+                        $user->getEmail(),
+                    );
+                }
+            )->toArray();
     }
 }

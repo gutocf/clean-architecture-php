@@ -3,21 +3,17 @@
 namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\AddUserData;
-use App\UseCase\User\AddUser;
+use App\UseCase\User\Port\CreateUserParams;
+use App\UseCase\User\CreateUser;
 use Exception;
 use Laminas\Json\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Twig\Environment;
 
 class UsersAddController implements ControllerInterface
 {
-
-    public function __construct(
-        private AddUser $addUser,
-        private Environment $twig
-    ) {
+    public function __construct(private CreateUser $addUser)
+    {
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
@@ -25,13 +21,13 @@ class UsersAddController implements ControllerInterface
         try {
             $data = $request->getParsedBody();
 
-            $addUserData = new AddUserData(
+            $addUserData = new CreateUserParams(
                 $data['name'] ?? null,
                 $data['email'] ?? null,
                 $data['password'] ?? null
             );
 
-            $this->addUser->add($addUserData);
+            $this->addUser->create($addUserData);
 
             $response->getBody()->write(Json::encode(['success' => 'User added']));
 

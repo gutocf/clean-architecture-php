@@ -2,8 +2,8 @@
 
 namespace App\UseCase\User;
 
-use App\UseCase\Port\UserRepositoryInterface;
 use App\UseCase\User\Exception\UserNotFoundException;
+use App\UseCase\User\UserRepositoryInterface;
 
 class DeleteUser
 {

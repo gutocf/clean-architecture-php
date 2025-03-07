@@ -46,7 +46,7 @@ class LeagueCsv implements CsvInterface
     /**
      * Gets the path to the CSV file.
      *
-     * @param string $filename Name of the file.
+     * @param  string $filename Name of the file.
      * @return string
      */
     private function getPath(string $filename): string

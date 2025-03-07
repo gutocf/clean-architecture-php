@@ -3,7 +3,7 @@
 namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\UpdateUserData;
+use App\UseCase\User\Port\UpdateUserParams;
 use App\UseCase\User\UpdateUser;
 use Exception;
 use Laminas\Json\Json;
@@ -14,10 +14,8 @@ use Twig\Environment;
 class UsersEditController implements ControllerInterface
 {
 
-    public function __construct(
-        private UpdateUser $updateUser,
-        private Environment $twig
-    ) {
+    public function __construct(private UpdateUser $updateUser)
+    {
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args = null): ResponseInterface
@@ -27,7 +25,7 @@ class UsersEditController implements ControllerInterface
         try {
             $data = $request->getParsedBody();
 
-            $updateUserData = new UpdateUserData(
+            $updateUserData = new UpdateUserParams(
                 $id,
                 $data['name'] ?? null,
                 $data['email'] ?? null,

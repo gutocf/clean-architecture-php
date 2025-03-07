@@ -3,7 +3,7 @@
 namespace App\Presentation\Controller\Web;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\ViewUserData;
+use App\UseCase\User\Port\ViewUserParams;
 use App\UseCase\User\ViewUser;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -29,7 +29,7 @@ class UsersViewController implements ControllerInterface
         try {
             $user = $this->viewUser->view($id);
 
-            $userViewData = new ViewUserData(
+            $userViewData = new ViewUserParams(
                 $user->getId(),
                 $user->getName(),
                 $user->getEmail()

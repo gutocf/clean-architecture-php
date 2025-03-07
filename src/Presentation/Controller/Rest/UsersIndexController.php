@@ -3,7 +3,7 @@
 namespace App\Presentation\Controller\Rest;
 
 use App\Presentation\Controller\ControllerInterface;
-use App\UseCase\Port\User\ListUserData;
+use App\UseCase\User\Port\ListUserParams;
 use App\UseCase\User\CountUser;
 use App\UseCase\User\ListUser;
 use App\Util\Pagination\Exception\PaginationException;
@@ -32,10 +32,14 @@ class UsersIndexController implements ControllerInterface
             $users = $this->formatOutput($request, $users);
             $response->getBody()->write(Json::encode(compact('users', 'pageInfo')));
         } catch (PaginationException $ex) {
-            $response->getBody()->write(Json::encode([
-                'error' => $ex->getMessage(),
-                'code' => $ex->getCode(),
-            ]));
+            $response->getBody()->write(
+                Json::encode(
+                    [
+                    'error' => $ex->getMessage(),
+                    'code' => $ex->getCode(),
+                    ]
+                )
+            );
         }
 
         return $response;
@@ -44,8 +48,8 @@ class UsersIndexController implements ControllerInterface
     /**
      * Formats the output data.
      *
-     * @param ServerRequestInterface $request
-     * @param ListUserData[] $users
+     * @param  ServerRequestInterface $request
+     * @param  ListUserParams[]       $users
      * @return array
      */
     private function formatOutput(ServerRequestInterface $request, array $users): array
@@ -53,8 +57,9 @@ class UsersIndexController implements ControllerInterface
         $uri = $request->getUri();
 
         return collection($users)
-            ->map(function (ListUserData $user) use ($uri) {
-                return [
+            ->map(
+                function (ListUserParams $user) use ($uri) {
+                    return [
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
@@ -66,8 +71,9 @@ class UsersIndexController implements ControllerInterface
                         'type' => 'GET',
                         'rel'  => 'self',
                     ],
-                ];
-            })
+                    ];
+                }
+            )
             ->toArray();
     }
 }

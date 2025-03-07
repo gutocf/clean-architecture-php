@@ -1,13 +1,13 @@
 <?php
 
-namespace App\UseCase\Port\User;
+namespace App\UseCase\User\Port;
 
 /**
  * @property int $id
  * @property string $name
  * @property string $email
  */
-class ViewUserData
+class ViewUserParams
 {
     public function __construct(
         public int $id,

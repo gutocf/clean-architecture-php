@@ -3,11 +3,12 @@
 namespace App\UseCase\User;
 
 use App\Entity\User;
-use App\UseCase\Port\UserRepositoryInterface;
-use App\UseCase\Port\User\UpdateUserData;
 use App\UseCase\User\Exception\InvalidEmailException;
 use App\UseCase\User\Exception\InvalidNameException;
+use App\UseCase\User\Exception\UserExistsException;
 use App\UseCase\User\Exception\UserNotFoundException;
+use App\UseCase\User\Port\UpdateUserParams;
+use App\UseCase\User\UserRepositoryInterface;
 
 class UpdateUser
 {
@@ -15,7 +16,7 @@ class UpdateUser
     {
     }
 
-    public function update(UpdateUserData $data): bool
+    public function update(UpdateUserParams $data): User
     {
         $user = $this->repository->findById($data->id);
 
@@ -31,10 +32,18 @@ class UpdateUser
             throw new InvalidEmailException();
         }
 
+        $user_email = $this->repository->findByEmail($data->email);
+
+        if($user_email !== null && $user->getId() !== $user_email->getId()) {
+            throw new UserExistsException();
+        }
+
         $user->setName($data->name);
         $user->setEmail($data->email);
 
-        return $this->repository->update($user);
+        $this->repository->update($user);
+
+        return $user;
     }
 
     public function get(int $id): ?User

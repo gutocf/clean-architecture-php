@@ -9,8 +9,8 @@ abstract class PageInfoFactory
     /**
      * Creates a PageInfo object from a ServerRequestInterface object and total number of items.
      *
-     * @param ServerRequestInterface $request The request object.
-     * @param int $total The total number of items
+     * @param  ServerRequestInterface $request The request object.
+     * @param  int                    $total   The total number of items
      * @return PageInfo
      */
     public static function create(ServerRequestInterface $request, int $total): PageInfo
